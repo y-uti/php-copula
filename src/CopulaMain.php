@@ -3,12 +3,6 @@ namespace YUti\Copula;
 
 class CopulaMain
 {
-    public function __construct()
-    {
-        \JpGraph\JpGraph::load();
-        \JpGraph\JpGraph::module('contour');
-    }
-
     public function __invoke(array $argv)
     {
         $xs = range(-3.0, 3.0, 0.02);
@@ -36,12 +30,8 @@ class CopulaMain
             }
         }
 
-        $graph = new \Graph(800,800);
-        $graph->SetScale('intint');
-        $graph->SetAxisStyle(AXSTYLE_BOXOUT);
-        $graph->SetMargin(20,20,20,20);
-        $cp = new \ContourPlot($z);
-        $graph->Add($cp);
-        $graph->Stroke();
+        $writer = new ContourPlotWriter();
+        // $writer = new CsvWriter();
+        $writer->write($z);
     }
 }

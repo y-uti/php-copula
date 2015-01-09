@@ -14,6 +14,6 @@ class NormalDistribution implements Distribution
 
     public function __invoke($x)
     {
-        return stats_cdf_normal($x, $this->mean, $this->stddev, 1);
+        return \stats_cdf_normal($x, $this->mean, $this->stddev, 1);
     }
 }

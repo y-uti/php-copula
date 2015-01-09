@@ -26,39 +26,13 @@ class CopulaMain
         // $copula = new PlackettCopula(10);
         // $copula = new ProductCopula();
 
-        $cdfX = array_map($dist, $xs);
-        $cdfY = array_map($dist, $ys);
-        $cdfXDelta = array_map($dist, array_map($this->delta($delta), $xs));
-        $cdfYDelta = array_map($dist, array_map($this->delta($delta), $ys));
+        $cdf = new JointDistributionByCopula($copula, $dist, $dist);
+        $pdf = new JointDensity($cdf, $delta);
 
-        foreach ($cdfX as $xi => $x) {
-            foreach ($cdfY as $yi => $y) {
-                $z00[$xi][$yi] = $copula($x, $y);
-            }
-        }
-
-        foreach ($cdfXDelta as $xi => $x) {
-            foreach ($cdfY as $yi => $y) {
-                $zx0[$xi][$yi] = $copula($x, $y);
-            }
-        }
-
-        foreach ($cdfX as $xi => $x) {
-            foreach ($cdfYDelta as $yi => $y) {
-                $z0y[$xi][$yi] = $copula($x, $y);
-            }
-        }
-
-        foreach ($cdfXDelta as $xi => $x) {
-            foreach ($cdfYDelta as $yi => $y) {
-                $zxy[$xi][$yi] = $copula($x, $y);
-            }
-        }
-
-        foreach (range(0, count($xs) - 1) as $xi) {
-            foreach (range(0, count($ys) - 1) as $yi) {
-                $z[$xi][$yi] =
-                    ($z00[$xi][$yi] + $zxy[$xi][$yi] - $zx0[$xi][$yi] - $z0y[$xi][$yi]) / ($delta * $delta);
+        $z = array_fill(0, count($xs), array_fill(0, count($xs), 0));
+        foreach ($xs as $xi => $x) {
+            foreach ($ys as $yi => $y) {
+                $z[$xi][$yi] = $pdf($x, $y);
             }
         }
 
@@ -69,12 +43,5 @@ class CopulaMain
         $cp = new \ContourPlot($z);
         $graph->Add($cp);
         $graph->Stroke();
-    }
-
-    private function delta($delta)
-    {
-        return function ($a) use ($delta) {
-            return $a + $delta;
-        };
     }
 }

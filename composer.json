@@ -1,0 +1,30 @@
+{
+    "name": "y-uti/php-copula",
+    "license": "MIT",
+    "authors": [
+	{
+	    "name": "Yuji Uchiyama",
+	    "email": "y.uchiyama.1015@gmail.com"
+	}
+    ],
+
+    "require": {
+	"jpgraph/jpgraph": "dev-master"
+    },
+
+    "require-dev": {
+	"phpunit/phpunit": "4.4.*"
+    },
+
+    "autoload": {
+	"psr-4": {
+	    "YUti\\Copula\\": "src/"
+	}
+    },
+
+    "autoload-dev": {
+	"psr-4": {
+	    "YUti\\Copula\\": "tests/"
+	}
+    }
+}

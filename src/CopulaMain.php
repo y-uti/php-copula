@@ -5,6 +5,30 @@ class CopulaMain
 {
     public function __invoke(array $argv)
     {
+        $commandLineParser = new CommandLineParser();
+        $parseResult = $commandLineParser->parse();
+        $options = $parseResult->options;
+
+        $copulaKind = $options['copula'];
+        $theta = $options['theta'];
+
+        $writerKind = $options['writer'];
+
+        $copulaRepository = array(
+            'amh' => function () use ($theta) { return new AliMikhallHaqCopula($theta); },
+            'clayton' => function () use ($theta) { return new ClaytonCopula($theta); },
+            'frank' => function () use ($theta) { return new FrankCopula($theta); },
+            'gumbel' => function () use ($theta) { return new GumbelCopula($theta); },
+            'joe' => function () use ($theta) { return new JoeCopula($theta); },
+            'plackett' => function () use ($theta) { return new Plackettopula($theta);},
+            'product' => function () use ($theta) { return new Plackettopula($theta);},
+        );
+
+        $writerRepository = array(
+            'contour' => function () { return new ContourPlotWriter(); },
+            'csv' => function () { return new CsvWriter(); },
+        );
+
         $xs = range(-3.0, 3.0, 0.02);
         $ys = range(-3.0, 3.0, 0.02);
         $delta = 0.001;
@@ -12,13 +36,7 @@ class CopulaMain
         $dist = new NormalDistribution();
         // $dist = new UniformDistribution(-2, 2);
 
-        // $copula = new AliMikhallHaqCopula(0.95);
-        $copula = new ClaytonCopula(1);
-        // $copula = new FrankCopula(10);
-        // $copula = new GumbelCopula(3);
-        // $copula = new JoeCopula(10);
-        // $copula = new PlackettCopula(10);
-        // $copula = new ProductCopula();
+        $copula = $copulaRepository[$copulaKind]($theta);
 
         $cdf = new JointDistributionByCopula($copula, $dist, $dist);
         $pdf = new JointDensity($cdf, $delta);
@@ -30,8 +48,7 @@ class CopulaMain
             }
         }
 
-        $writer = new ContourPlotWriter();
-        // $writer = new CsvWriter();
+        $writer = $writerRepository[$writerKind]();
         $writer->write($z);
     }
 }

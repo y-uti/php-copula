@@ -9,20 +9,7 @@ class CopulaMain
         $parseResult = $commandLineParser->parse();
         $options = $parseResult->options;
 
-        $copulaKind = $options['copula'];
-        $theta = $options['theta'];
-
         $writerKind = $options['writer'];
-
-        $copulaRepository = array(
-            'amh' => function () use ($theta) { return new AliMikhallHaqCopula($theta); },
-            'clayton' => function () use ($theta) { return new ClaytonCopula($theta); },
-            'frank' => function () use ($theta) { return new FrankCopula($theta); },
-            'gumbel' => function () use ($theta) { return new GumbelCopula($theta); },
-            'joe' => function () use ($theta) { return new JoeCopula($theta); },
-            'plackett' => function () use ($theta) { return new Plackettopula($theta);},
-            'product' => function () use ($theta) { return new Plackettopula($theta);},
-        );
 
         $writerRepository = array(
             'contour' => function () { return new ContourPlotWriter(); },
@@ -36,7 +23,7 @@ class CopulaMain
         $dist = new NormalDistribution();
         // $dist = new UniformDistribution(-2, 2);
 
-        $copula = $copulaRepository[$copulaKind]($theta);
+        $copula = (new CopulaBuilder())->build($options['copula'], $options);
 
         $cdf = new JointDistributionByCopula($copula, $dist, $dist);
         $pdf = new JointDensity($cdf, $delta);

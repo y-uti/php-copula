@@ -10,10 +10,7 @@ class CsvWriter implements Writer
 
         $fh = fopen($filename !== false ? $filename : 'php://stdout', 'w');
         for ($yi = 0; $yi < $ysize; ++$yi) {
-            $line = '';
-            for ($xi = 0; $xi < $xsize; ++$xi) {
-                $line .= ($xi == 0 ? '' : ',') . $data[$xi][$yi];
-            }
+            $line = implode(',', $data[$yi]);
             fwrite($fh, $line . "\n");
         }
         fclose($fh);

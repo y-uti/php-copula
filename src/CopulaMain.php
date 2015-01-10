@@ -29,9 +29,9 @@ class CopulaMain
         $pdf = new JointDensity($cdf, $delta);
 
         $z = array_fill(0, count($xs), array_fill(0, count($xs), 0));
-        foreach ($xs as $xi => $x) {
-            foreach ($ys as $yi => $y) {
-                $z[$xi][$yi] = $pdf($x, $y);
+        foreach ($ys as $yi => $y) {
+            foreach ($xs as $xi => $x) {
+                $z[$yi][$xi] = $pdf($x, $y);
             }
         }
 

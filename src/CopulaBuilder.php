@@ -1,10 +1,8 @@
 <?php
 namespace YUti\Copula;
 
-class CopulaBuilder
+class CopulaBuilder extends AbstractBuilder
 {
-    private $repository;
-
     public function __construct()
     {
         $this->repository = self::defaultRepository();
@@ -21,24 +19,5 @@ class CopulaBuilder
             'plackett' => function ($p) { return new PlackettCopula($p['theta']);      },
             'product'  => function ($p) { return new ProductCopula();                  },
         );
-    }
-
-    private function getBuildFunction($key)
-    {
-        if (array_key_exists($key, $this->repository)) {
-            return $this->repository[$key];
-        }
-
-        return false;
-    }
-
-    public function build($kind, array $params)
-    {
-        $buildFunction = $this->getBuildFunction($kind);
-        if ($buildFunction) {
-            return $buildFunction($params);
-        }
-
-        return false;
     }
 }

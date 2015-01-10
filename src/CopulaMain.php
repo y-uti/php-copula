@@ -9,24 +9,18 @@ class CopulaMain
         $parseResult = $commandLineParser->parse();
         $options = $parseResult->options;
 
-        $writerKind = $options['writer'];
+        $copulaBuilder = new CopulaBuilder();
+        $copula = $copulaBuilder->build($options['copula'], $options);
 
-        $writerRepository = array(
-            'contour' => function () { return new ContourPlotWriter(); },
-            'csv' => function () { return new CsvWriter(); },
-        );
+        $distributionBuilder = new DistributionBuilder();
+        $xdist = $distributionBuilder->build($options['xdist'], $options);
+        $ydist = $distributionBuilder->build($options['ydist'], $options);
 
-        $xs = range(-3.0, 3.0, 0.02);
-        $ys = range(-3.0, 3.0, 0.02);
-        $delta = 0.001;
+        $cdf = new JointDistributionByCopula($copula, $xdist, $ydist);
+        $pdf = new JointDensity($cdf, $options['delta']);
 
-        $dist = new NormalDistribution();
-        // $dist = new UniformDistribution(-2, 2);
-
-        $copula = (new CopulaBuilder())->build($options['copula'], $options);
-
-        $cdf = new JointDistributionByCopula($copula, $dist, $dist);
-        $pdf = new JointDensity($cdf, $delta);
+        $xs = range($options['xmin'], $options['xmax'], $options['xstep']);
+        $ys = range($options['ymin'], $options['ymax'], $options['ystep']);
 
         $z = array_fill(0, count($xs), array_fill(0, count($xs), 0));
         foreach ($ys as $yi => $y) {
@@ -35,7 +29,8 @@ class CopulaMain
             }
         }
 
-        $writer = $writerRepository[$writerKind]();
+        $writerBuilder = new WriterBuilder();
+        $writer = $writerBuilder->build($options['writer'], $options);
         $writer->write($z);
     }
 }

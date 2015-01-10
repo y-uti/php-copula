@@ -22,7 +22,7 @@ class CopulaMain
         $xs = range($options['xmin'], $options['xmax'], $options['xstep']);
         $ys = range($options['ymin'], $options['ymax'], $options['ystep']);
 
-        $z = array_fill(0, count($xs), array_fill(0, count($xs), 0));
+        $z = array_fill(0, count($ys), array_fill(0, count($xs), 0));
         foreach ($ys as $yi => $y) {
             foreach ($xs as $xi => $x) {
                 $z[$yi][$xi] = $pdf($x, $y);

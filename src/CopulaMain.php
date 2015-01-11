@@ -19,8 +19,8 @@ class CopulaMain
         $cdf = new JointDistributionByCopula($copula, $xdist, $ydist);
         $pdf = new JointDensity($cdf, $options['delta']);
 
-        $xs = range($options['xmin'], $options['xmax'], $options['xstep']);
-        $ys = range($options['ymin'], $options['ymax'], $options['ystep']);
+        $xs = $options['xdata'];
+        $ys = $options['ydata'];
 
         $z = array_fill(0, count($ys), array_fill(0, count($xs), 0));
         foreach ($ys as $yi => $y) {

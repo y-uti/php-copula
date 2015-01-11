@@ -85,28 +85,35 @@ class CommandLineParser
     {
         $parseResult = $this->parser->parse();
 
-        if (!$parseResult->options['xrange']) {
-            $parseResult->options['xrange'] = $parseResult->options['range'];
-        }
-        if (!$parseResult->options['yrange']) {
-            $parseResult->options['yrange'] = $parseResult->options['range'];
-        }
-        list ($xmin, $xstep, $xmax) = explode(':', $parseResult->options['xrange']);
-        $parseResult->options['xmin'] = $xmin;
-        $parseResult->options['xmax'] = $xmax;
-        $parseResult->options['xstep'] = $xstep;
-        list ($ymin, $ystep, $ymax) = explode(':', $parseResult->options['yrange']);
-        $parseResult->options['ymin'] = $ymin;
-        $parseResult->options['ymax'] = $ymax;
-        $parseResult->options['ystep'] = $ystep;
+        $this->setDefaultIfNull(
+            $parseResult->options['xrange'], $parseResult->options['range']);
+        $this->setDefaultIfNull(
+            $parseResult->options['yrange'], $parseResult->options['range']);
 
-        if (!$parseResult->options['xdist']) {
-            $parseResult->options['xdist'] = $parseResult->options['dist'];
-        }
-        if (!$parseResult->options['ydist']) {
-            $parseResult->options['ydist'] = $parseResult->options['dist'];
-        }
+        $parseResult->options['xdata'] =
+            $this->buildData($parseResult->options['xrange']);
+        $parseResult->options['ydata'] =
+            $this->buildData($parseResult->options['yrange']);
+
+        $this->setDefaultIfNull(
+            $parseResult->options['xdist'], $parseResult->options['dist']);
+        $this->setDefaultIfNull(
+            $parseResult->options['ydist'], $parseResult->options['dist']);
 
         return $parseResult;
+    }
+
+    private function setDefaultIfNull(&$value, $default)
+    {
+        if ($value == null) {
+            $value = $default;
+        }
+    }
+
+    private function buildData($range)
+    {
+        list ($start, $step, $end) = explode(':', $range);
+
+        return range($start, $end, $step);
     }
 }

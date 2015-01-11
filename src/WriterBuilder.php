@@ -3,12 +3,7 @@ namespace YUti\Copula;
 
 class WriterBuilder extends AbstractBuilder
 {
-    public function __construct()
-    {
-        $this->repository = self::defaultRepository();
-    }
-
-    private static function defaultRepository()
+    protected static function defaultRepository()
     {
         return array(
             'contour' => function ($p) { return new ContourPlotWriter(); },

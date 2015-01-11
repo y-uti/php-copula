@@ -3,12 +3,7 @@ namespace YUti\Copula;
 
 class DistributionBuilder extends AbstractBuilder
 {
-    public function __construct()
-    {
-        $this->repository = self::defaultRepository();
-    }
-
-    private static function defaultRepository()
+    protected static function defaultRepository()
     {
         return array(
             'normal'  => function ($p) { return new NormalDistribution(0, 1);  },

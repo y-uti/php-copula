@@ -3,12 +3,7 @@ namespace YUti\Copula;
 
 class CopulaBuilder extends AbstractBuilder
 {
-    public function __construct()
-    {
-        $this->repository = self::defaultRepository();
-    }
-
-    private static function defaultRepository()
+    protected static function defaultRepository()
     {
         return array(
             'amh'      => function ($p) { return new AliMikhallHaqCopula($p['theta']); },

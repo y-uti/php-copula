@@ -5,6 +5,16 @@ abstract class AbstractBuilder
 {
     protected $repository;
 
+    public function __construct()
+    {
+        $this->repository = static::defaultRepository();
+    }
+
+    protected static function defaultRepository()
+    {
+        return array();
+    }
+
     private function getBuildFunction($key)
     {
         if (array_key_exists($key, $this->repository)) {

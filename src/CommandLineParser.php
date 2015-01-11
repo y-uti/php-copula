@@ -27,14 +27,6 @@ class CommandLineParser
             'action' => 'StoreFloat',
             'default' => 1,
         ));
-        $parser->addOption('writer', array(
-            'short_name' => '-w',
-            'long_name' => '--writer',
-            'description' => '',
-            'action' => 'StoreString',
-            'default' => 'contour',
-        ));
-
         $parser->addOption('range', array(
             'short_name' => '-r',
             'long_name' => '--range',
@@ -52,7 +44,6 @@ class CommandLineParser
             'description' => '',
             'action' => 'StoreString',
         ));
-
         $parser->addOption('dist', array(
             'short_name' => '-d',
             'long_name' => '--dist',
@@ -70,12 +61,42 @@ class CommandLineParser
             'description' => '',
             'action' => 'StoreString',
         ));
-
+        $parser->addOption('mean', array(
+            'long_name' => '--mean',
+            'description' => '',
+            'action' => 'StoreFloat',
+            'default' => 0,
+        ));
+        $parser->addOption('stddev', array(
+            'long_name' => '--stddev',
+            'description' => '',
+            'action' => 'StoreFloat',
+            'default' => 1,
+        ));
+        $parser->addOption('min', array(
+            'long_name' => '--min',
+            'description' => '',
+            'action' => 'StoreFloat',
+            'default' => 0,
+        ));
+        $parser->addOption('max', array(
+            'long_name' => '--max',
+            'description' => '',
+            'action' => 'StoreFloat',
+            'default' => 1,
+        ));
         $parser->addOption('delta', array(
             'long_name' => '--delta',
             'description' => '',
             'action' => 'StoreFloat',
             'default' => 0.001,
+        ));
+        $parser->addOption('writer', array(
+            'short_name' => '-w',
+            'long_name' => '--writer',
+            'description' => '',
+            'action' => 'StoreString',
+            'default' => 'contour',
         ));
 
         return $parser;

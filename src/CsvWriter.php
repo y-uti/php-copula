@@ -3,14 +3,32 @@ namespace YUti\Copula;
 
 class CsvWriter implements Writer
 {
-    public function write(array $data, $filename = false)
+    private $delimiter;
+    private $eol;
+
+    public function __construct($delimiter = ',', $eol = PHP_EOL)
     {
-        $fh = fopen($filename !== false ? $filename : 'php://stdout', 'w');
-        $ysize = count($data);
-        for ($yi = 0; $yi < $ysize; ++$yi) {
-            $line = implode(',', $data[$yi]);
-            fwrite($fh, $line . "\n");
+        $this->delimiter = $delimiter;
+        $this->eol = $eol;
+    }
+
+    public function write(array $xs, array $ys, array $data, $filename = null)
+    {
+        $fh = fopen($filename ?: 'php://stdout', 'w');
+
+        fwrite($fh, $this->buildRow('', $xs));
+        foreach ($ys as $yi => $y) {
+            fwrite($fh, $this->buildRow($y, $data[$yi]));
         }
+
         fclose($fh);
+    }
+
+    private function buildRow($header, $data, $withEOL = true)
+    {
+        $delimiter = $this->delimiter;
+        $eol = $withEOL ? $this->eol : '';
+
+        return $header . $delimiter . implode($delimiter, $data) . $eol;
     }
 }

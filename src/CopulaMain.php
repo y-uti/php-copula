@@ -31,6 +31,6 @@ class CopulaMain
 
         $writerBuilder = new WriterBuilder();
         $writer = $writerBuilder->build($options['writer'], $options);
-        $writer->write($z);
+        $writer->write($xs, $ys, $z);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace YUti\Copula;
 
-class AliMikhallHaqCopula implements Copula
+class AliMikhailHaqCopula implements Copula
 {
     private $theta;
 

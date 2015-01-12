@@ -32,7 +32,7 @@ class CommandLineParser
             'long_name' => '--range',
             'description' => '',
             'action' => 'StoreString',
-            'default' => '-2:0.4:2',
+            'default' => '-3:0.05:3',
         ));
         $parser->addOption('xrange', array(
             'long_name' => '--xrange',

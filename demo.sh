@@ -15,7 +15,7 @@ COPULA_LIST=(
 
 DIST_LIST=(
     'normal:  --dist=normal --mean=0 --stddev=1 --range=-4:0.08:4 --delta=0.001'
-    'uniform: --dist=uniform --min=0 --max=1.001 --range=0:0.01:1 --delta=0.001'
+    'uniform: --dist=uniform --min=-0.001 --max=1.001 --range=0:0.01:1 --delta=0.001'
 )
 
 WRITER_LIST=(

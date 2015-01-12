@@ -15,13 +15,13 @@ class JointDensity
     public function __invoke($x, $y)
     {
         $dist = $this->distribution;
-        $d = $this->delta;
+        $d = $this->delta / 2;
 
         $numer =
-            $dist($x + $d, $y + $d)
-            - $dist($x + $d, $y)
-            - $dist($x, $y + $d)
-            + $dist($x, $y);
+              $dist($x + $d, $y + $d)
+            - $dist($x + $d, $y - $d)
+            - $dist($x - $d, $y + $d)
+            + $dist($x - $d, $y - $d);
 
         return $numer / ($d * $d);
     }
